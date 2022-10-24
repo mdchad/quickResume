@@ -29,7 +29,7 @@ export function Hero() {
       </h1>
       <p className="mx-auto mt-6 max-w-2xl text-lg tracking-tight text-slate-700">
         Most people spend so much time writing resume. Let AI craft the perfect
-        resume that will catch the employer's attention.
+        resume that will catch the employer&apos;s attention.
       </p>
       <div className="mt-10 flex justify-center gap-x-6">
         <Button href="/register">Get 6 months free</Button>

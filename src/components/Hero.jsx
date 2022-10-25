@@ -43,7 +43,7 @@ export function Hero() {
           >
             <path d="m9.997 6.91-7.583 3.447A1 1 0 0 1 1 9.447V2.553a1 1 0 0 1 1.414-.91L9.997 5.09c.782.355.782 1.465 0 1.82Z" />
           </svg>
-          <span className="ml-3">Watch video</span>
+          <span className="ml-3">Try now</span>
         </Button>
       </div>
       {/*<div className="mt-36 lg:mt-44">*/}

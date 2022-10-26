@@ -11,7 +11,7 @@ const testimonials = [
   [
     {
       content:
-        'TaxPal is so easy to use I can’t help but wonder if it’s really doing the things the government expects me to do.',
+        'QuickResume is so easy to use I can’t help but wonder if it’s really doing the things the government expects me to do.',
       author: {
         name: 'Sheryl Berge',
         role: 'CEO at Lynch LLC',
@@ -88,7 +88,7 @@ export function Testimonials() {
       <Container>
         <div className="mx-auto max-w-2xl md:text-center">
           <h2 className="font-display text-3xl tracking-tight text-slate-900 sm:text-4xl">
-            Loved by businesses worldwide.
+            Loved by job seekers worldwide.
           </h2>
           <p className="mt-4 text-lg tracking-tight text-slate-700">
             Our software is so simple that people can’t help but fall in love

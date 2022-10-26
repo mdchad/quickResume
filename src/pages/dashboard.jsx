@@ -1,7 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
 
-import { AuthLayout } from '@/components/AuthLayout'
 import { Button } from '@/components/Button'
 import { TextField } from '@/components/Fields'
 import { Logo } from '@/components/Logo'
@@ -11,19 +10,15 @@ import { Dialog, Menu, Transition } from '@headlessui/react'
 import {
   Bars3BottomLeftIcon,
   BellIcon,
-  CalendarIcon,
-  ChartBarIcon,
   FolderIcon,
   HomeIcon,
-  InboxIcon,
-  UsersIcon,
   XMarkIcon,
   WrenchIcon
 } from '@heroicons/react/24/outline'
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
 
 const navigation = [
-  { name: 'Dashboard', href: '#', icon: HomeIcon, current: true },
+  { name: 'Home', href: '#', icon: HomeIcon, current: true },
   { name: 'Resumes', href: '#', icon: FolderIcon, current: false },
   { name: 'Settings', href: '#', icon: WrenchIcon, current: false },
   // { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
@@ -42,6 +37,26 @@ function classNames(...classes) {
 
 export default function Dashboard() {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [result, setResult] = useState();
+  const [professionInput, setProfessionInput] = useState("");
+  const [skillInput, setSkillInput] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function onSubmit(event) {
+    event.preventDefault();
+    const response = await fetch("/api/generate", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ profession: professionInput, skill: skillInput }),
+    });
+    const data = await response.json();
+    console.log(data.result)
+    setResult(data.result);
+    setSkillInput("");
+    setProfessionInput("");
+  }
 
   return (
       <>
@@ -183,23 +198,23 @@ export default function Dashboard() {
               </button>
               <div className="flex flex-1 justify-between px-4">
                 <div className="flex flex-1">
-                  <form className="flex w-full md:ml-0" action="#" method="GET">
-                    <label htmlFor="search-field" className="sr-only">
-                      Search
-                    </label>
-                    <div className="relative w-full text-gray-400 focus-within:text-gray-600">
-                      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center">
-                        <MagnifyingGlassIcon className="h-5 w-5" aria-hidden="true" />
-                      </div>
-                      <input
-                          id="search-field"
-                          className="block h-full w-full border-transparent py-2 pl-8 pr-3 text-gray-900 placeholder-gray-500 focus:border-transparent focus:placeholder-gray-400 focus:outline-none focus:ring-0 sm:text-sm"
-                          placeholder="Search"
-                          type="search"
-                          name="search"
-                      />
-                    </div>
-                  </form>
+                {/*  <form className="flex w-full md:ml-0" action="#" method="GET">*/}
+                {/*    <label htmlFor="search-field" className="sr-only">*/}
+                {/*      Search*/}
+                {/*    </label>*/}
+                {/*    <div className="relative w-full text-gray-400 focus-within:text-gray-600">*/}
+                {/*      <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center">*/}
+                {/*        <MagnifyingGlassIcon className="h-5 w-5" aria-hidden="true" />*/}
+                {/*      </div>*/}
+                {/*      <input*/}
+                {/*          id="search-field"*/}
+                {/*          className="block h-full w-full border-transparent py-2 pl-8 pr-3 text-gray-900 placeholder-gray-500 focus:border-transparent focus:placeholder-gray-400 focus:outline-none focus:ring-0 sm:text-sm"*/}
+                {/*          placeholder="Search"*/}
+                {/*          type="search"*/}
+                {/*          name="search"*/}
+                {/*      />*/}
+                {/*    </div>*/}
+                {/*  </form>*/}
                 </div>
                 <div className="ml-4 flex items-center md:ml-6">
                   <button
@@ -256,15 +271,60 @@ export default function Dashboard() {
 
             <main className="flex-1">
               <div className="py-6">
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
-                  <h1 className="text-2xl font-semibold text-gray-900">Dashboard</h1>
-                </div>
+                {/*<div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">*/}
+                {/*  <h1 className="text-2xl font-semibold text-gray-900">Dashboard</h1>*/}
+                {/*</div>*/}
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
                   {/* Replace with your content */}
-                  <div className="py-4">
-                    <div className="h-96 rounded-lg border-4 border-dashed border-gray-200" />
-                  </div>
+                  {/*<div className="py-4">*/}
+                  {/*  <div className="h-96 rounded-lg border-4 border-dashed border-gray-200" />*/}
+                  {/*</div>*/}
+                  <form action="#" className="mt-10 grid grid-cols-1 gap-y-8">
+                    <TextField
+                        label="Add your profession"
+                        id="profession"
+                        name="profession"
+                        type="text"
+                        placeholder="Business analyst"
+                        required
+                        onChange={(e) => setProfessionInput(e.target.value)}
+                    />
+                    <TextField
+                        label="Add your skills"
+                        id="skills"
+                        name="skills"
+                        type="text"
+                        placeholder="e.g Javascript, Excel"
+                        required
+                        onChange={(e) => setSkillInput(e.target.value)}
+                    />
+                    {/*<TextField*/}
+                    {/*    label="Password"*/}
+                    {/*    id="password"*/}
+                    {/*    name="password"*/}
+                    {/*    type="password"*/}
+                    {/*    autoComplete="current-password"*/}
+                    {/*    required*/}
+                    {/*/>*/}
+                    <div>
+                      <Button
+                          type="submit"
+                          variant="solid"
+                          color="blue"
+                          className="w-full"
+                          onClick={onSubmit}
+                      >
+                      <span>
+                        Generate <span aria-hidden="true">&rarr;</span>
+                      </span>
+                      </Button>
+                    </div>
+                  </form>
                   {/* /End replace */}
+                  <div className="mt-16">
+                    <p className="font-medium">Output</p>
+                    <textarea className="mt-6 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" rows={30} value={result} />
+                  </div>
                 </div>
               </div>
             </main>

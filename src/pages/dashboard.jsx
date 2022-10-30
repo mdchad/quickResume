@@ -13,14 +13,17 @@ import {
   FolderIcon,
   HomeIcon,
   XMarkIcon,
-  WrenchIcon
+  WrenchIcon,
+  InboxIcon
 } from '@heroicons/react/24/outline'
 import { MagnifyingGlassIcon } from '@heroicons/react/20/solid'
+import Steps from "@/components/Steps";
 
 const navigation = [
-  { name: 'Home', href: '#', icon: HomeIcon, current: true },
-  { name: 'Resumes', href: '#', icon: FolderIcon, current: false },
-  { name: 'Settings', href: '#', icon: WrenchIcon, current: false },
+  { name: 'Home', href: '#', icon: HomeIcon, current: true, pro: false },
+  { name: 'Resumes', href: '#', icon: FolderIcon, current: false , pro: true},
+  { name: 'Cover letter', href: '#', icon: InboxIcon, current: false, pro: true },
+  { name: 'Settings', href: '#', icon: WrenchIcon, current: false, pro: false },
   // { name: 'Calendar', href: '#', icon: CalendarIcon, current: false },
   // { name: 'Documents', href: '#', icon: InboxIcon, current: false },
   // { name: 'Reports', href: '#', icon: ChartBarIcon, current: false },
@@ -110,11 +113,7 @@ export default function Dashboard() {
                       </div>
                     </Transition.Child>
                     <div className="flex flex-shrink-0 items-center px-4">
-                      <img
-                          className="h-8 w-auto"
-                          src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                          alt="Your Company"
-                      />
+                      <Logo className="h-8 w-auto" />
                     </div>
                     <div className="mt-5 h-0 flex-1 overflow-y-auto">
                       <nav className="space-y-1 px-2">
@@ -137,6 +136,9 @@ export default function Dashboard() {
                                   aria-hidden="true"
                               />
                               {item.name}
+                              { item.pro && <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
+                                Pro
+                              </span> }
                             </a>
                         ))}
                       </nav>
@@ -155,11 +157,7 @@ export default function Dashboard() {
             {/* Sidebar component, swap this element with another sidebar if you like */}
             <div className="flex flex-grow flex-col overflow-y-auto border-r border-gray-200 bg-white pt-5">
               <div className="flex flex-shrink-0 items-center px-4">
-                <img
-                    className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                    alt="Your Company"
-                />
+                <Logo className="h-8 w-auto" />
               </div>
               <div className="mt-5 flex flex-grow flex-col">
                 <nav className="flex-1 space-y-1 px-2 pb-4">
@@ -180,6 +178,9 @@ export default function Dashboard() {
                             aria-hidden="true"
                         />
                         {item.name}
+                        { item.pro && <span className="ml-2 inline-flex items-center rounded-full bg-blue-500 px-2 py-0.5 text-xs font-medium text-white">
+                          Pro
+                        </span> }
                       </a>
                   ))}
                 </nav>
@@ -274,56 +275,62 @@ export default function Dashboard() {
                 {/*<div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">*/}
                 {/*  <h1 className="text-2xl font-semibold text-gray-900">Dashboard</h1>*/}
                 {/*</div>*/}
-                <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8">
+                <div className="mx-auto max-w-7xl px-4 sm:px-6 md:px-8 flex">
                   {/* Replace with your content */}
                   {/*<div className="py-4">*/}
                   {/*  <div className="h-96 rounded-lg border-4 border-dashed border-gray-200" />*/}
                   {/*</div>*/}
-                  <form action="#" className="mt-10 grid grid-cols-1 gap-y-8">
-                    <TextField
-                        label="Add your profession"
-                        id="profession"
-                        name="profession"
-                        type="text"
-                        placeholder="Business analyst"
-                        required
-                        onChange={(e) => setProfessionInput(e.target.value)}
-                    />
-                    <TextField
-                        label="Add your skills"
-                        id="skills"
-                        name="skills"
-                        type="text"
-                        placeholder="e.g Javascript, Excel"
-                        required
-                        onChange={(e) => setSkillInput(e.target.value)}
-                    />
-                    {/*<TextField*/}
-                    {/*    label="Password"*/}
-                    {/*    id="password"*/}
-                    {/*    name="password"*/}
-                    {/*    type="password"*/}
-                    {/*    autoComplete="current-password"*/}
-                    {/*    required*/}
-                    {/*/>*/}
-                    <div>
-                      <Button
-                          type="submit"
-                          variant="solid"
-                          color="blue"
-                          className="w-full"
-                          onClick={onSubmit}
-                      >
-                      <span>
-                        Generate <span aria-hidden="true">&rarr;</span>
-                      </span>
-                      </Button>
-                    </div>
-                  </form>
                   {/* /End replace */}
-                  <div className="mt-16">
-                    <p className="font-medium">Output</p>
+                  <div className="mt-16 w-full">
+                    {/*<p className="font-medium">Output</p>*/}
                     <textarea className="mt-6 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" rows={30} value={result} />
+                  </div>
+
+                  <div className="mt-16 ml-10 w-full">
+                    <Steps />
+                    <form action="#" className="grid grid-cols-1 gap-y-8 mt-12">
+                      <TextField
+                          label="Add your profession"
+                          id="profession"
+                          name="profession"
+                          type="text"
+                          placeholder="Business analyst"
+                          required
+                          onChange={(e) => setProfessionInput(e.target.value)}
+                          value={professionInput}
+                      />
+                      <TextField
+                          label="Add your skills"
+                          id="skills"
+                          name="skills"
+                          type="text"
+                          placeholder="e.g Javascript, Excel"
+                          required
+                          onChange={(e) => setSkillInput(e.target.value)}
+                          value={skillInput}
+                      />
+                      {/*<TextField*/}
+                      {/*    label="Password"*/}
+                      {/*    id="password"*/}
+                      {/*    name="password"*/}
+                      {/*    type="password"*/}
+                      {/*    autoComplete="current-password"*/}
+                      {/*    required*/}
+                      {/*/>*/}
+                      <div className="flex w-full">
+                        <Button
+                            type="submit"
+                            variant="solid"
+                            color="blue"
+                            className=""
+                            onClick={onSubmit}
+                        >
+                        <span>
+                          Generate <span aria-hidden="true">&rarr;</span>
+                        </span>
+                        </Button>
+                      </div>
+                    </form>
                   </div>
                 </div>
               </div>

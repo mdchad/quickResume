@@ -172,7 +172,7 @@ export default function Dashboard() {
     <SideNav>
       <div className="mx-auto flex max-w-7xl px-4 sm:px-6 md:px-8">
         <div className="mt-16 w-full">
-          <div className="mt-6 block w-full h-full rounded-md border-gray-300 shadow-sm sm:text-sm">
+          <div className="mt-6 block w-full h-full rounded-md border-gray-300 shadow-xl sm:text-sm p-10">
             <p>{personalResult}</p>
             <p>{educationResult}</p>
             <p style={{whiteSpace: "pre-line"}}>{professionalResult}</p>

@@ -170,9 +170,9 @@ export default function Dashboard() {
 
   return (
     <SideNav>
-      <div className="mx-auto flex max-w-7xl px-4 sm:px-6 md:px-8">
-        <div className="mt-16 w-full">
-          <div className="mt-6 block w-full h-full rounded-md border-gray-300 shadow-xl sm:text-sm p-10">
+      <div className="mx-auto md:flex max-w-7xl px-4 sm:px-6 md:px-8">
+        <div className="mt-16 md:w-full">
+          <div className="mt-6 block w-full h-max rounded-md border-gray-300 shadow-xl sm:text-sm p-10">
             <p>{personalResult}</p>
             <p>{educationResult}</p>
             <p style={{whiteSpace: "pre-line"}}>{professionalResult}</p>
@@ -184,7 +184,7 @@ export default function Dashboard() {
           {/*/>*/}
         </div>
 
-        <div className="mt-16 ml-10 w-full">
+        <div className="mt-16 md:ml-10 sm:ml-6 md:w-full">
           <Steps setStep={setFormSection} stepValue={formSection}/>
           {formSection === 'personal' && <Personal setPersonalResult={setPersonalResult}/>}
           {formSection === 'education' && <Education setEducationResult={setEducationResult}/>}

@@ -5,48 +5,84 @@ import { useState } from 'react'
 import Steps from '@/components/Steps'
 import SideNav from '@/components/SideNav'
 
-function Education() {
-  const [result, setResult] = useState()
-  const [professionInput, setProfessionInput] = useState('')
-  const [skillInput, setSkillInput] = useState('')
+function Personal({ setPersonalResult }) {
+  const [fullName, setFullName] = useState('')
 
   async function onSubmit(event) {
     event.preventDefault()
-    const response = await fetch('/api/generate', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ profession: professionInput, skill: skillInput }),
-    })
-    const data = await response.json()
-    console.log(data.result)
-    setResult(data.result)
-    setSkillInput('')
-    setProfessionInput('')
+    setPersonalResult(fullName)
+  }
+
+  return (
+      <form action="#" className="mt-12 grid grid-cols-1 gap-y-8">
+        <TextField
+            label="Full Name"
+            id="full-name"
+            name="full-name"
+            type="text"
+            required
+            onChange={(e) => setFullName(e.target.value)}
+            value={fullName}
+        />
+        {/*<TextField*/}
+        {/*    label=""*/}
+        {/*    id="skills"*/}
+        {/*    name="skills"*/}
+        {/*    type="text"*/}
+        {/*    placeholder="e.g Javascript, Excel"*/}
+        {/*    required*/}
+        {/*    onChange={(e) => setSkillInput(e.target.value)}*/}
+        {/*    value={skillInput}*/}
+        {/*/>*/}
+        <div className="flex w-full">
+          <Button
+              type="submit"
+              variant="solid"
+              color="blue"
+              className=""
+              onClick={onSubmit}
+          >
+          <span>
+            Add <span aria-hidden="true">&rarr;</span>
+          </span>
+          </Button>
+        </div>
+      </form>
+  )
+}
+
+function Education({ setEducationResult }) {
+  const [educationInput, setEducationInput] = useState('')
+  const [universityInput, setUniversityInput] = useState('')
+
+  async function onSubmit(event) {
+    event.preventDefault()
+    setEducationResult(educationInput)
+    setUniversityInput('')
+    setEducationInput('')
   }
 
   return (
       <form action="#" className="mt-12 grid grid-cols-1 gap-y-8">
         <TextField
             label="Add your education"
-            id="profession"
-            name="profession"
+            id="education"
+            name="education"
             type="text"
-            placeholder="Business analyst"
+            placeholder="Bachelor in Computer Science"
             required
-            onChange={(e) => setProfessionInput(e.target.value)}
-            value={professionInput}
+            onChange={(e) => setEducationInput(e.target.value)}
+            value={educationInput}
         />
         <TextField
             label="Add your university"
-            id="skills"
-            name="skills"
+            id="university"
+            name="university"
             type="text"
-            placeholder="e.g Javascript, Excel"
+            placeholder="e.g Harvard"
             required
-            onChange={(e) => setSkillInput(e.target.value)}
-            value={skillInput}
+            onChange={(e) => setUniversityInput(e.target.value)}
+            value={universityInput}
         />
         <div className="flex w-full">
           <Button
@@ -57,7 +93,7 @@ function Education() {
               onClick={onSubmit}
           >
           <span>
-            Generate <span aria-hidden="true">&rarr;</span>
+            Add <span aria-hidden="true">&rarr;</span>
           </span>
           </Button>
         </div>
@@ -65,8 +101,7 @@ function Education() {
   )
 }
 
-function Professional() {
-  const [result, setResult] = useState()
+function Professional({ setProfessionalResult }) {
   const [professionInput, setProfessionInput] = useState('')
   const [skillInput, setSkillInput] = useState('')
 
@@ -81,7 +116,7 @@ function Professional() {
     })
     const data = await response.json()
     console.log(data.result)
-    setResult(data.result)
+    setProfessionalResult(data.result)
     setSkillInput('')
     setProfessionInput('')
   }
@@ -127,25 +162,33 @@ function Professional() {
 
 export default function Dashboard() {
   const [loading, setLoading] = useState(false)
+  const [personalResult, setPersonalResult] = useState()
+  const [educationResult, setEducationResult] = useState()
+  const [professionalResult, setProfessionalResult] = useState()
 
-  const [formSection, setFormSection] = useState('')
+  const [formSection, setFormSection] = useState('personal')
 
   return (
     <SideNav>
       <div className="mx-auto flex max-w-7xl px-4 sm:px-6 md:px-8">
         <div className="mt-16 w-full">
-          <textarea
-            className="mt-6 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-            rows={30}
-            // value={result}
-          />
+          <div className="mt-6 block w-full h-full rounded-md border-gray-300 shadow-sm sm:text-sm">
+            <p>{personalResult}</p>
+            <p>{educationResult}</p>
+            <p style={{whiteSpace: "pre-line"}}>{professionalResult}</p>
+          </div>
+          {/*<textarea*/}
+          {/*  className="mt-6 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"*/}
+          {/*  rows={30}*/}
+          {/*  value={personalResult + " " + educationResult}*/}
+          {/*/>*/}
         </div>
 
         <div className="mt-16 ml-10 w-full">
           <Steps setStep={setFormSection} stepValue={formSection}/>
-          {formSection === 'personal' && <Professional />}
-          {formSection === 'education' && <Education />}
-          {formSection === 'professional' && <Professional />}
+          {formSection === 'personal' && <Personal setPersonalResult={setPersonalResult}/>}
+          {formSection === 'education' && <Education setEducationResult={setEducationResult}/>}
+          {formSection === 'professional' && <Professional setProfessionalResult={setProfessionalResult}/>}
         </div>
       </div>
     </SideNav>

@@ -32,10 +32,9 @@ export function Hero() {
         resume that will catch the employer&apos;s attention.
       </p>
       <div className="mt-10 flex justify-center gap-x-6">
-        <Button href="/register">Get 6 months free</Button>
+        {/*<Button href="/register">Get 6 months free</Button>*/}
         <Button
           href="/dashboard"
-          variant="outline"
         >
           <svg
             aria-hidden="true"

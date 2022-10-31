@@ -7,6 +7,7 @@ import { Button } from '@/components/Button'
 import { Container } from '@/components/Container'
 import { Logo } from '@/components/Logo'
 import { NavLink } from '@/components/NavLink'
+import { useSession, signIn, signOut } from 'next-auth/react'
 
 function MobileNavLink({ href, children }) {
   return (
@@ -90,6 +91,7 @@ function MobileNavigation() {
 }
 
 export function Header() {
+  const { data: session, status } = useSession()
   return (
     <header className="py-10">
       <Container>
@@ -106,7 +108,19 @@ export function Header() {
           </div>
           <div className="flex items-center gap-x-5 md:gap-x-8">
             <div className="hidden md:block">
-              <NavLink href="/login">Sign in</NavLink>
+              {session ? (
+                <>
+                  <img
+                    className="h-8 w-8 rounded-full inline-block mr-2"
+                    referrerPolicy="no-referrer"
+                    src={session.user.image}
+                    alt=""
+                  />
+                  <span className="text-sm text-slate-700">{session.user.name}</span>
+                </>
+              ) : (
+                <button className="text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900" onClick={() => signIn()}>Sign in</button>
+              )}
             </div>
             <Button href="/register" color="blue">
               <span>

@@ -5,8 +5,22 @@ import { AuthLayout } from '@/components/AuthLayout'
 import { Button } from '@/components/Button'
 import { TextField } from '@/components/Fields'
 import { Logo } from '@/components/Logo'
+import {signOut, useSession} from "next-auth/react";
+import {useEffect} from "react";
 
 export default function Login() {
+  const { data: session, status } = useSession()
+
+  async function checkSession() {
+    if (session) {
+      await signOut()
+    }
+  }
+
+  useEffect(() => {
+    checkSession()
+  }, [session])
+
   return (
     <>
       <Head>

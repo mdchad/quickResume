@@ -108,19 +108,7 @@ export function Header() {
           </div>
           <div className="flex items-center gap-x-5 md:gap-x-8">
             <div className="hidden md:block">
-              {session ? (
-                <>
-                  <img
-                    className="h-8 w-8 rounded-full inline-block mr-2"
-                    referrerPolicy="no-referrer"
-                    src={session.user.image}
-                    alt=""
-                  />
-                  <span className="text-sm text-slate-700">{session.user.name}</span>
-                </>
-              ) : (
-                <button className="text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900" onClick={() => signIn()}>Sign in</button>
-              )}
+              <NavLink href="/login">Sign in</NavLink>
             </div>
             <Button href="/register" color="blue">
               <span>

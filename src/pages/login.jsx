@@ -3,23 +3,14 @@ import Link from 'next/link'
 
 import { AuthLayout } from '@/components/AuthLayout'
 import { Button } from '@/components/Button'
-import { TextField } from '@/components/Fields'
 import { Logo } from '@/components/Logo'
-import {signOut, useSession} from "next-auth/react";
-import {useEffect} from "react";
+import {getProviders, getSession, signIn, useSession} from "next-auth/react";
 
-export default function Login() {
+export default function Login({ providers }) {
   const { data: session, status } = useSession()
-
-  async function checkSession() {
-    if (session) {
-      await signOut()
-    }
+  async function onSignIn(e, provider) {
+    const result = await signIn(provider.id)
   }
-
-  useEffect(() => {
-    checkSession()
-  }, [session])
 
   return (
     <>
@@ -47,37 +38,33 @@ export default function Login() {
             </p>
           </div>
         </div>
-        <form action="#" className="mt-10 grid grid-cols-1 gap-y-8">
-          <TextField
-            label="Email address"
-            id="email"
-            name="email"
-            type="email"
-            autoComplete="email"
-            required
-          />
-          <TextField
-            label="Password"
-            id="password"
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            required
-          />
-          <div>
-            <Button
-              type="submit"
-              variant="solid"
-              color="blue"
-              className="w-full"
-            >
-              <span>
-                Sign in <span aria-hidden="true">&rarr;</span>
-              </span>
-            </Button>
-          </div>
-        </form>
+        {providers &&
+          Object.values(providers).map(provider => (
+              <div key={provider.name} className="mt-12 w-full">
+                <Button onClick={(e) => onSignIn(e, provider)} className="w-full">
+                  Sign in with{' '} {provider.name}
+                </Button>
+              </div>
+          ))}
       </AuthLayout>
     </>
   )
+}
+
+export async function getServerSideProps(context) {
+  const { req } = context;
+  const providers = await getProviders()
+  const session = await getSession({ req });
+
+  if (session) {
+    return {
+      redirect: { destination: "/dashboard" },
+    };
+  }
+
+  return {
+    props: {
+      providers
+    },
+  }
 }

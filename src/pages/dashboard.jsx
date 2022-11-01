@@ -4,6 +4,7 @@ import { TextField } from '@/components/Fields'
 import { useState } from 'react'
 import Steps from '@/components/Steps'
 import SideNav from '@/components/SideNav'
+import { getSession } from "next-auth/react";
 
 function Personal({ setPersonalResult }) {
   const [fullName, setFullName] = useState('')
@@ -104,6 +105,7 @@ function Education({ setEducationResult }) {
 function Professional({ setProfessionalResult }) {
   const [professionInput, setProfessionInput] = useState('')
   const [skillInput, setSkillInput] = useState('')
+  const [companyInput, setCompanyInput] = useState('')
 
   async function onSubmit(event) {
     event.preventDefault()
@@ -112,7 +114,7 @@ function Professional({ setProfessionalResult }) {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ profession: professionInput, skill: skillInput }),
+      body: JSON.stringify({ profession: professionInput, skill: skillInput, company: companyInput }),
     })
     const data = await response.json()
     console.log(data.result)
@@ -132,6 +134,16 @@ function Professional({ setProfessionalResult }) {
         required
         onChange={(e) => setProfessionInput(e.target.value)}
         value={professionInput}
+      />
+      <TextField
+          label="Add your company"
+          id="company"
+          name="company"
+          type="text"
+          placeholder="e.g Microsoft"
+          required
+          onChange={(e) => setCompanyInput(e.target.value)}
+          value={companyInput}
       />
       <TextField
         label="Add your skills"
@@ -161,7 +173,6 @@ function Professional({ setProfessionalResult }) {
 }
 
 export default function Dashboard() {
-  const [loading, setLoading] = useState(false)
   const [personalResult, setPersonalResult] = useState()
   const [educationResult, setEducationResult] = useState()
   const [professionalResult, setProfessionalResult] = useState()
@@ -170,9 +181,9 @@ export default function Dashboard() {
 
   return (
     <SideNav>
-      <div className="mx-auto md:flex max-w-7xl px-4 sm:px-6 md:px-8">
+      <div className="mx-auto md:flex max-w-7xl px-4 sm:px-6">
         <div className="mt-16 md:w-full">
-          <div className="mt-6 block w-full h-max rounded-md border-gray-300 shadow-xl sm:text-sm p-10">
+          <div className="block w-full h-max rounded-md border-gray-300 shadow-2xl sm:text-sm p-10">
             <p>{personalResult}</p>
             <p>{educationResult}</p>
             <p style={{whiteSpace: "pre-line"}}>{professionalResult}</p>
@@ -193,4 +204,19 @@ export default function Dashboard() {
       </div>
     </SideNav>
   )
+}
+
+export async function getServerSideProps(context) {
+  const { req } = context;
+  const session = await getSession({ req });
+
+  if (!session) {
+    return {
+      redirect: { destination: "/login" },
+    };
+  }
+
+  return {
+    props: {},
+  }
 }

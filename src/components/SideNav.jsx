@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import { useSession, signIn, signOut } from "next-auth/react"
+import {useSession, signIn, signOut, getSession} from "next-auth/react"
 
 import { Logo } from '@/components/Logo'
 
@@ -37,6 +37,11 @@ export default function SideNav({ children}) {
   const router = useRouter()
   const { data: session, status } = useSession()
   const [sidebarOpen, setSidebarOpen] = useState(false)
+
+  async function onSignOut() {
+    await signOut()
+    await router.push('/login')
+  }
 
   return (
       <>
@@ -212,15 +217,16 @@ export default function SideNav({ children}) {
                         {userNavigation.map((item) => (
                             <Menu.Item key={item.name}>
                               {({ active }) => (
-                                  <a
-                                      href={item.href}
+                                  <button
+                                      onClick={() => onSignOut()}
+                                      // href={item.href}
                                       className={classNames(
                                           active ? 'bg-gray-100' : '',
-                                          'block px-4 py-2 text-sm text-gray-700'
+                                          'w-full text-left block px-4 py-2 text-sm text-gray-700'
                                       )}
                                   >
                                     {item.name}
-                                  </a>
+                                  </button>
                               )}
                             </Menu.Item>
                         ))}
@@ -231,7 +237,7 @@ export default function SideNav({ children}) {
               </div>
             </div>
 
-            <main className="flex-1">
+            <main className="flex-1 bg-gray-50">
               <div className="py-6">
                 {children}
               </div>

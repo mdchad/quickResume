@@ -8,7 +8,7 @@ const openai = new OpenAIApi(configuration);
 export default async function (req, res) {
   const completion = await openai.createCompletion({
     model: "text-davinci-002",
-    prompt: generatePrompt(req.body.profession, req.body.skill),
+    prompt: generatePrompt(req.body.profession, req.body.skill, req.body.company),
     temperature: 0.7,
     max_tokens: 256,
     top_p: 1,
@@ -19,9 +19,9 @@ export default async function (req, res) {
   res.status(200).json({ result: completion.data.choices[0].text });
 }
 
-function generatePrompt(profession, skills) {
+function generatePrompt(profession, skills, company) {
   return `
-  Write a resume with professional output as follow, experience worked as a ${profession} at Sensorflow Inc using ${skills} from 2018 to 2020 with format: 
+  Write a resume with professional output as follow, experience worked as a ${profession} at ${company} using ${skills} from 2018 to 2020 with format: 
     Company,
     Role,
     Year,

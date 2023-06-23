@@ -4,7 +4,6 @@ import { TextField } from '@/components/Fields'
 import { useState } from 'react'
 import Steps from '@/components/Steps'
 import SideNav from '@/components/SideNav'
-import { getSession } from "next-auth/react";
 
 function Personal({ setPersonalResult }) {
   const [fullName, setFullName] = useState('')
@@ -206,17 +205,17 @@ export default function Dashboard() {
   )
 }
 
-export async function getServerSideProps(context) {
-  const { req } = context;
-  const session = await getSession({ req });
-
-  if (!session) {
-    return {
-      redirect: { destination: "/login" },
-    };
-  }
-
-  return {
-    props: {},
-  }
-}
+// export async function getServerSideProps(context) {
+//   const { req } = context;
+//   const session = await getSession({ req });
+//
+//   if (!session) {
+//     return {
+//       redirect: { destination: "/login" },
+//     };
+//   }
+//
+//   return {
+//     props: {},
+//   }
+// }

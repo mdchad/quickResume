@@ -6,9 +6,8 @@ import { Button } from '@/components/Button'
 import { TextField } from '@/components/Fields'
 import { Logo } from '@/components/Logo'
 import SideNav from "@/components/SideNav";
-import {getSession} from "next-auth/react";
 
-export default function CoverLetter() {
+export default function Resume() {
   return (
       <SideNav>
         <p>Hello world</p>

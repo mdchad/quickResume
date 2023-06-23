@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import Link from 'next/link'
-import {useSession, signIn, signOut, getSession} from "next-auth/react"
+import { UserButton } from "@clerk/nextjs";
 
 import { Logo } from '@/components/Logo'
 
@@ -12,7 +12,6 @@ import {
   FolderIcon,
   HomeIcon,
   XMarkIcon,
-  WrenchIcon,
   InboxIcon
 } from '@heroicons/react/24/outline'
 import {useRouter} from "next/router";
@@ -35,11 +34,9 @@ function classNames(...classes) {
 
 export default function SideNav({ children}) {
   const router = useRouter()
-  const { data: session, status } = useSession()
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   async function onSignOut() {
-    await signOut()
     await router.push('/login')
   }
 
@@ -196,12 +193,12 @@ export default function SideNav({ children}) {
                     <div>
                       <Menu.Button className="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
                         <span className="sr-only">Open user menu</span>
-                        <img
-                            className="h-8 w-8 rounded-full"
-                            src={session?.user?.image}
-                            alt=""
-                            referrerPolicy="no-referrer"
-                        />
+                        {/*<img*/}
+                        {/*    className="h-8 w-8 rounded-full"*/}
+                        {/*    src={session?.user?.image}*/}
+                        {/*    alt=""*/}
+                        {/*    referrerPolicy="no-referrer"*/}
+                        {/*/>*/}
                       </Menu.Button>
                     </div>
                     <Transition
@@ -234,6 +231,7 @@ export default function SideNav({ children}) {
                     </Transition>
                   </Menu>
                 </div>
+                <UserButton afterSignOutUrl="/"/>
               </div>
             </div>
 
